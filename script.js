@@ -107,6 +107,25 @@ function initGame() {
     resetBtn.addEventListener('click', resetGame);
     playAgainBtn.addEventListener('click', resetGame);
     
+    // Footer close functionality
+    const footerCloseBtn = document.querySelector('.footer-close-btn');
+    const charityFooter = document.getElementById('charity-footer');
+    
+    if (footerCloseBtn && charityFooter) {
+        footerCloseBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            charityFooter.classList.add('hidden');
+        });
+        
+        // Optional: Add keyboard support
+        footerCloseBtn.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                charityFooter.classList.add('hidden');
+            }
+        });
+    }
+    
     // Difficulty selection
     const difficultyBtns = document.querySelectorAll('.difficulty-btn');
     difficultyBtns.forEach(btn => {

@@ -667,6 +667,14 @@ body {
         gap: 8px;
     }
     
+    .footer-close-btn {
+        top: 5px;
+        right: 8px;
+        font-size: 18px;
+        width: 26px;
+        height: 26px;
+    }
+    
     .time-up {
         font-size: 24px;
     }
@@ -786,6 +794,14 @@ body {
         padding: 8px 12px;
     }
     
+    .footer-close-btn {
+        top: 3px;
+        right: 6px;
+        font-size: 16px;
+        width: 24px;
+        height: 24px;
+    }
+    
     .play-header {
         padding: 10px 15px;
         flex-direction: column;
@@ -821,6 +837,44 @@ body {
     padding: 15px 20px;
     z-index: 1000;
     backdrop-filter: blur(10px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.charity-footer.hidden {
+    transform: translateY(100%);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.footer-close-btn {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    background: none;
+    border: none;
+    color: #FFC907;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 1001;
+}
+
+.footer-close-btn:hover, .footer-close-btn:focus {
+    background: rgba(255, 201, 7, 0.2);
+    transform: scale(1.1);
+    outline: none;
+}
+
+.footer-close-btn:focus {
+    box-shadow: 0 0 0 2px rgba(255, 201, 7, 0.5);
 }
 
 .footer-content {
