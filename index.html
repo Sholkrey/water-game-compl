@@ -17,6 +17,32 @@
                 <h1 class="game-logo">Water Drop Catcher!!!</h1>
             </div>
             
+            <div class="difficulty-section">
+                <h2 class="difficulty-title">Choose Your Challenge</h2>
+                <div class="difficulty-buttons" role="group" aria-label="Difficulty selection">
+                    <button class="difficulty-btn" data-difficulty="easy" aria-label="Easy difficulty: 60 seconds, win at 15 points" aria-selected="false">
+                        <span class="diff-name">Easy</span>
+                        <span class="diff-desc">60s • Win at 15pts</span>
+                    </button>
+                    <button class="difficulty-btn selected" data-difficulty="normal" aria-label="Normal difficulty: 45 seconds, win at 25 points" aria-selected="true">
+                        <span class="diff-name">Normal</span>
+                        <span class="diff-desc">45s • Win at 25pts</span>
+                    </button>
+                    <button class="difficulty-btn" data-difficulty="hard" aria-label="Hard difficulty: 30 seconds, win at 35 points" aria-selected="false">
+                        <span class="diff-name">Hard</span>
+                        <span class="diff-desc">30s • Win at 35pts</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="instructions">
+                <p><strong>How to Play:</strong></p>
+                <p>• Tap/click water drops before they fall!</p>
+                <p>• Light blue drops 💧 = +1 point</p>
+                <p>• Dark blue drops 💙 = +2 points</p>
+                <p>• Avoid dirty water ☕ and pollution ☁️</p>
+            </div>
+            
             <button id="start-btn" class="main-button">START GAME</button>
         </div>
     </div>
@@ -26,19 +52,18 @@
         <div class="play-header">
             <div class="timer-section">
                 <div class="timer-label">Timer:</div>
-                <div class="timer-value"><span id="time">30</span> Seconds Left</div>
+                <div class="timer-value" aria-live="polite"><span id="time">30</span> Seconds Left</div>
             </div>
             <div class="score-section">
                 <div class="score-label">Score:</div>
-                <div class="score-value" id="score">0</div>
+                <div class="score-value" id="score" aria-live="polite">0</div>
             </div>
             <div class="control-section">
-                <button id="reset-btn" class="reset-button">RESET</button>
+                <button id="reset-btn" class="reset-button" aria-label="Reset game and return to start screen">RESET</button>
             </div>
         </div>
         
-        <div id="game-container">
-            <div id="bucket"></div>
+        <div id="game-container" role="application" aria-label="Water drop tapping game area">
         </div>
     </div>
 
@@ -54,6 +79,23 @@
             <button id="play-again-btn" class="main-button">PLAY AGAIN!?</button>
         </div>
     </div>
+
+    <!-- CHARITY: WATER FOOTER -->
+    <footer id="charity-footer" class="charity-footer">
+        <div class="footer-content">
+            <div class="footer-mission">
+                <p>Help bring clean water to people in need around the world</p>
+            </div>
+            <div class="footer-links">
+                <a href="https://www.charitywater.org" target="_blank" rel="noopener" class="footer-link">
+                    Learn More About charity: water
+                </a>
+                <a href="https://www.charitywater.org/donate" target="_blank" rel="noopener" class="footer-link donate-link">
+                    Donate Now
+                </a>
+            </div>
+        </div>
+    </footer>
     
     <script src="script.js"></script>
 </body>

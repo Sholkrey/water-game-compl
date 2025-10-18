@@ -29,7 +29,7 @@ body {
     padding: 0;
     min-height: 100vh;
     background: #000000;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, Arial, sans-serif;
+    font-family: 'Proxima Nova', 'Avenir', 'Segoe UI', Tahoma, Geneva, Verdana, Arial, sans-serif;
     overflow: hidden;
 }
 
@@ -61,7 +61,7 @@ body {
     border-radius: 20px;
     box-shadow: 0 15px 40px rgba(255, 201, 7, 0.3);
     text-align: center;
-    max-width: 450px;
+    max-width: 500px;
     width: 90%;
     border: 2px solid #FFC907;
 }
@@ -86,6 +86,91 @@ body {
     margin: 0;
     font-weight: bold;
     letter-spacing: 1px;
+}
+
+/* DIFFICULTY SELECTION */
+.difficulty-section {
+    margin: 30px 0;
+}
+
+.difficulty-title {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.difficulty-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.difficulty-btn {
+    padding: 12px 16px;
+    background: #f8f9fa;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    min-width: 100px;
+    flex: 1;
+    max-width: 130px;
+}
+
+.difficulty-btn:hover, .difficulty-btn:focus {
+    border-color: #FFC907;
+    background: #fff9e6;
+    transform: translateY(-2px);
+    outline: none;
+}
+
+.difficulty-btn:focus {
+    box-shadow: 0 0 0 3px rgba(255, 201, 7, 0.3);
+}
+
+.difficulty-btn.selected {
+    background: #FFC907;
+    border-color: #e6b406;
+    color: #000;
+    font-weight: bold;
+}
+
+.diff-name {
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.diff-desc {
+    display: block;
+    font-size: 11px;
+    opacity: 0.8;
+    line-height: 1.2;
+}
+
+/* INSTRUCTIONS */
+.instructions {
+    background: #f8f9fa;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 20px 0;
+    text-align: left;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.instructions p {
+    margin: 0 0 8px 0;
+    color: #333;
+}
+
+.instructions p:last-child {
+    margin-bottom: 0;
 }
 
 /* PLAY SCREEN */
@@ -160,10 +245,15 @@ body {
     letter-spacing: 1px;
 }
 
-.main-button:hover {
+.main-button:hover, .main-button:focus {
     background-color: #e6b406;
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(255, 201, 7, 0.6);
+}
+
+.main-button:focus {
+    outline: none;
+    box-shadow: 0 5px 15px rgba(255, 201, 7, 0.6), 0 0 0 3px rgba(255, 201, 7, 0.3);
 }
 
 /* Reset Button */
@@ -182,33 +272,18 @@ body {
     letter-spacing: 1px;
 }
 
-.reset-button:hover {
+.reset-button:hover, .reset-button:focus {
     background-color: #d63384;
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(245, 64, 44, 0.5);
 }
 
-.water-drop {
-    position: absolute;
-    width: 60px;  /* increased from 40px */
-    height: 60px; /* increased from 40px */
-    background-color: #0099ff;
-    border-radius: 50%;
-    animation: dropFall linear forwards;
-    transform-origin: center;
-    cursor: pointer;
-    padding: 15px;  /* Add padding for larger click area */
-    margin: -15px;  /* Offset padding to maintain visual size */
-    transition: transform 0.1s ease;  /* Smooth hover effect */
+.reset-button:focus {
+    outline: none;
+    box-shadow: 0 4px 12px rgba(245, 64, 44, 0.5), 0 0 0 3px rgba(245, 64, 44, 0.3);
 }
 
-.water-drop:hover {
-    transform: scale(1.1);  /* Slight grow effect on hover */
-}
 
-.bad-drop {
-    background-color: #ff4444;
-}
 
 
 
@@ -221,47 +296,9 @@ body {
     }
 }
 
-/* Bucket Styles */
-#bucket {
-    position: absolute;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80px;
-    height: 30px;
-    background-color: #FFC907;
-    border-radius: 0 0 12px 12px;
-    border-top: 2px solid #e6b406;
-    transition: left 0.1s ease;
-    cursor: move;
-    box-shadow: 0 3px 12px rgba(255, 201, 7, 0.4);
-}
 
-#bucket::before {
-    content: '';
-    position: absolute;
-    top: -4px;
-    left: -3px;
-    right: -3px;
-    height: 6px;
-    background-color: #e6b406;
-    border-radius: 3px 3px 0 0;
-}
 
-/* Clean water drops */
-.water-drop.clean {
-    background: radial-gradient(circle at 30% 30%, #87CEEB, #4A90E2);
-    border: 2px solid #ffffff;
-    box-shadow: 0 3px 12px rgba(74, 144, 226, 0.6);
-}
-
-/* Dirty water drops */
-.water-drop.dirty {
-    background: radial-gradient(circle at 30% 30%, #8B4513, #654321);
-    border: 2px solid #A0522D;
-    box-shadow: 0 3px 12px rgba(139, 69, 19, 0.6);
-}
-
+/* Base water drop styles */
 .water-drop {
     position: absolute;
     width: 50px;
@@ -275,6 +312,35 @@ body {
 .water-drop:hover {
     transform: scale(1.1);
 }
+
+/* Clean water drops */
+.water-drop.clean {
+    background: radial-gradient(circle at 30% 30%, #87CEEB, #4A90E2);
+    border: 2px solid #ffffff;
+    box-shadow: 0 3px 12px rgba(74, 144, 226, 0.6);
+}
+
+/* Premium water drops (darker blue, +2 points) */
+.water-drop.premium {
+    background: radial-gradient(circle at 30% 30%, #2E5BBA, #1E3A8A);
+    border: 2px solid #ffffff;
+    box-shadow: 0 3px 12px rgba(30, 58, 138, 0.8);
+    animation: dropFall linear forwards, premiumGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes premiumGlow {
+    0% { box-shadow: 0 3px 12px rgba(30, 58, 138, 0.8); }
+    100% { box-shadow: 0 3px 16px rgba(30, 58, 138, 1), 0 0 20px rgba(30, 58, 138, 0.4); }
+}
+
+/* Dirty water drops */
+.water-drop.dirty {
+    background: radial-gradient(circle at 30% 30%, #8B4513, #654321);
+    border: 2px solid #A0522D;
+    box-shadow: 0 3px 12px rgba(139, 69, 19, 0.6);
+}
+
+
 
 /* END SCREEN */
 #end-screen {
@@ -411,6 +477,100 @@ body {
     font-size: 24px;
 }
 
+/* Milestone Notifications */
+.milestone-notification {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    background: linear-gradient(135deg, #FFC907, #FF902A);
+    border: 3px solid #ffffff;
+    border-radius: 20px;
+    padding: 20px 30px;
+    text-align: center;
+    z-index: 200;
+    opacity: 0;
+    transition: all 0.5s ease;
+    box-shadow: 0 10px 30px rgba(255, 201, 7, 0.6);
+    max-width: 300px;
+    min-width: 250px;
+}
+
+.milestone-notification.show {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.milestone-notification.hide {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+}
+
+.milestone-header {
+    font-size: 16px;
+    font-weight: bold;
+    color: #000;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.milestone-score {
+    font-size: 24px;
+    font-weight: bold;
+    color: #000;
+    margin-bottom: 10px;
+    text-shadow: 1px 1px 2px rgba(255,255,255,0.3);
+}
+
+.milestone-message {
+    font-size: 14px;
+    color: #000;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+/* Milestone Flash Effect */
+.milestone-flash {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(circle, rgba(255, 201, 7, 0.3) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 150;
+    animation: milestoneFlash 0.3s ease-out;
+}
+
+@keyframes milestoneFlash {
+    0% { opacity: 0; }
+    50% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+/* Particle Effects */
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 75;
+    animation: particleExplode 0.8s ease-out forwards;
+}
+
+@keyframes particleExplode {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--dx), var(--dy)) scale(0);
+        opacity: 0;
+    }
+}
+
 /* Confetti Animation */
 .confetti {
     position: absolute;
@@ -464,6 +624,49 @@ body {
         font-size: 20px;
     }
     
+    .difficulty-buttons {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .difficulty-btn {
+        max-width: none;
+    }
+    
+    .instructions {
+        font-size: 12px;
+        padding: 12px;
+    }
+    
+    .milestone-notification {
+        max-width: 250px;
+        min-width: 200px;
+        padding: 15px 20px;
+    }
+    
+    .milestone-header {
+        font-size: 14px;
+    }
+    
+    .milestone-score {
+        font-size: 20px;
+    }
+    
+    .milestone-message {
+        font-size: 12px;
+    }
+    
+    .footer-content {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .footer-links {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
     .time-up {
         font-size: 24px;
     }
@@ -496,10 +699,7 @@ body {
         font-size: 12px;
     }
     
-    #bucket {
-        width: 60px;
-        height: 25px;
-    }
+
     
     .water-drop, .obstacle {
         width: 40px;
@@ -534,6 +734,58 @@ body {
         font-size: 18px;
     }
     
+    .difficulty-title {
+        font-size: 16px;
+    }
+    
+    .diff-name {
+        font-size: 12px;
+    }
+    
+    .diff-desc {
+        font-size: 10px;
+    }
+    
+    .instructions {
+        font-size: 11px;
+        padding: 10px;
+    }
+    
+    .milestone-notification {
+        max-width: 220px;
+        min-width: 180px;
+        padding: 12px 16px;
+    }
+    
+    .milestone-header {
+        font-size: 12px;
+    }
+    
+    .milestone-score {
+        font-size: 18px;
+    }
+    
+    .milestone-message {
+        font-size: 11px;
+    }
+    
+    .footer-content {
+        padding: 10px;
+    }
+    
+    .footer-mission {
+        font-size: 12px;
+    }
+    
+    .footer-link {
+        font-size: 11px;
+        padding: 6px 10px;
+    }
+    
+    .donate-link {
+        padding: 8px 12px;
+    }
+    
     .play-header {
         padding: 10px 15px;
         flex-direction: column;
@@ -554,13 +806,79 @@ body {
         height: 35px;
     }
     
-    #bucket {
-        width: 50px;
-        height: 20px;
-    }
+
 }
 
 /* Touch-friendly interactions */
+/* CHARITY: WATER FOOTER */
+.charity-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.9);
+    border-top: 2px solid #FFC907;
+    padding: 15px 20px;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 20px;
+}
+
+.footer-mission {
+    color: #fff;
+    font-size: 14px;
+    flex: 1;
+}
+
+.footer-links {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.footer-link {
+    color: #FFC907;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.footer-link:hover {
+    background: rgba(255, 201, 7, 0.2);
+    transform: translateY(-1px);
+}
+
+.donate-link {
+    background: #FFC907;
+    color: #000 !important;
+    padding: 10px 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(255, 201, 7, 0.3);
+}
+
+.donate-link:hover {
+    background: #e6b406;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 201, 7, 0.5);
+}
+
+/* Hide footer during gameplay for better experience */
+#play-screen .charity-footer {
+    display: none;
+}
+
 @media (hover: none) {
     .water-drop, .obstacle {
         transform: scale(1.1); /* Slightly larger for touch */

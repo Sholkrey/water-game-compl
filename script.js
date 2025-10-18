@@ -5,6 +5,74 @@ let timeLeft = 30;
 let dropInterval = null;
 let obstacleInterval = null;
 let gameTimer = null;
+let currentDifficulty = 'normal';
+
+// Milestone tracking
+let achievedMilestones = new Set();
+
+// Milestone messages
+const milestoneMessages = {
+    5: [
+        "Great start! Keep it up! 💧",
+        "You're getting the hang of it! 🌊",
+        "Nice catches! 5 points already! ⭐"
+    ],
+    10: [
+        "Halfway there! 🎯",
+        "You're on fire! 10 points! 🔥",
+        "Excellent progress! 💪"
+    ],
+    15: [
+        "Almost there! Keep going! 🚀",
+        "15 points! You're amazing! ⚡",
+        "So close to victory! 🏆"
+    ],
+    20: [
+        "20 points! Incredible! 🌟",
+        "You're crushing it! 💯",
+        "Outstanding performance! 🎉"
+    ],
+    25: [
+        "25 points! Phenomenal! ✨",
+        "You're a water-catching master! 👑",
+        "Absolutely brilliant! 🏅"
+    ],
+    30: [
+        "30 points! Legendary! 🦄",
+        "Unbelievable skills! 🎪",
+        "You're unstoppable! 💫"
+    ],
+    35: [
+        "35 points! Beyond amazing! 🌈",
+        "Superhuman performance! 🦸‍♀️",
+        "You've transcended greatness! 🌠"
+    ]
+};
+
+// Difficulty settings
+const difficultySettings = {
+    easy: {
+        timeLimit: 60,
+        winScore: 15,
+        dropInterval: 800,
+        obstacleInterval: 3000,
+        scoreMultiplier: 1
+    },
+    normal: {
+        timeLimit: 45,
+        winScore: 25,
+        dropInterval: 600,
+        obstacleInterval: 2000,
+        scoreMultiplier: 1
+    },
+    hard: {
+        timeLimit: 30,
+        winScore: 35,
+        dropInterval: 400,
+        obstacleInterval: 1500,
+        scoreMultiplier: 1.5
+    }
+};
 
 // Screen elements
 const startScreen = document.getElementById('start-screen');
@@ -13,7 +81,6 @@ const endScreen = document.getElementById('end-screen');
 
 // Game elements
 const gameContainer = document.getElementById('game-container');
-const bucket = document.getElementById('bucket');
 const scoreDisplay = document.getElementById('score');
 const timeDisplay = document.getElementById('time');
 const startBtn = document.getElementById('start-btn');
@@ -21,11 +88,6 @@ const resetBtn = document.getElementById('reset-btn');
 const endMessage = document.getElementById('end-message');
 const finalScoreDisplay = document.getElementById('final-score-display');
 const playAgainBtn = document.getElementById('play-again-btn');
-
-// Bucket movement variables
-let bucketPosition = 50; // Starting position (percentage)
-const bucketSpeed = 2; // Speed as percentage
-let keys = {};
 
 // Screen management
 function showScreen(screenToShow) {
@@ -45,57 +107,50 @@ function initGame() {
     resetBtn.addEventListener('click', resetGame);
     playAgainBtn.addEventListener('click', resetGame);
     
-    // Keyboard controls
-    document.addEventListener('keydown', (e) => {
-        keys[e.key] = true;
-    });
-    
-    document.addEventListener('keyup', (e) => {
-        keys[e.key] = false;
-    });
-    
-    // Mouse controls
-    playScreen.addEventListener('mousemove', (e) => {
-        if (!gameRunning) return;
+    // Difficulty selection
+    const difficultyBtns = document.querySelectorAll('.difficulty-btn');
+    difficultyBtns.forEach(btn => {
+        // Add keyboard accessibility
+        btn.setAttribute('tabindex', '0');
+        btn.setAttribute('role', 'button');
         
-        const rect = gameContainer.getBoundingClientRect();
-        const mouseX = e.clientX - rect.left;
-        const containerWidth = rect.width;
-        const bucketWidth = 80;
+        btn.addEventListener('click', () => {
+            selectDifficulty(btn);
+        });
         
-        // Convert to percentage
-        bucketPosition = ((mouseX - bucketWidth/2) / (containerWidth - bucketWidth)) * 100;
-        bucketPosition = Math.max(0, Math.min(100, bucketPosition));
-        bucket.style.left = bucketPosition + '%';
+        btn.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                selectDifficulty(btn);
+            }
+        });
     });
     
-    // Start keyboard movement loop
-    requestAnimationFrame(updateBucketPosition);
+    function selectDifficulty(selectedBtn) {
+        // Remove selected class from all buttons
+        difficultyBtns.forEach(b => {
+            b.classList.remove('selected');
+            b.setAttribute('aria-selected', 'false');
+        });
+        // Add selected class to clicked button
+        selectedBtn.classList.add('selected');
+        selectedBtn.setAttribute('aria-selected', 'true');
+        // Set current difficulty
+        currentDifficulty = selectedBtn.dataset.difficulty;
+    }
 }
 
-// Update bucket position based on keyboard input
-function updateBucketPosition() {
-    if (gameRunning) {
-        if (keys['ArrowLeft'] || keys['a'] || keys['A']) {
-            bucketPosition = Math.max(0, bucketPosition - bucketSpeed);
-            bucket.style.left = bucketPosition + '%';
-        }
-        if (keys['ArrowRight'] || keys['d'] || keys['D']) {
-            bucketPosition = Math.min(100, bucketPosition + bucketSpeed);
-            bucket.style.left = bucketPosition + '%';
-        }
-    }
-    requestAnimationFrame(updateBucketPosition);
-}
+
 
 // Start the game
 function startGame() {
     if (gameRunning) return;
     
+    const settings = difficultySettings[currentDifficulty];
+    
     gameRunning = true;
     score = 0;
-    timeLeft = 30;
-    bucketPosition = 50; // Reset bucket to center
+    timeLeft = settings.timeLimit;
     
     // Show play screen
     showScreen(playScreen);
@@ -104,14 +159,11 @@ function startGame() {
     updateScore();
     updateTimer();
     
-    // Reset bucket position
-    bucket.style.left = bucketPosition + '%';
-    
-    // Start drop creation (clean drops and obstacles)
-    dropInterval = setInterval(createDrop, 600); // Create drop every 600ms
+    // Start drop creation with difficulty-based intervals
+    dropInterval = setInterval(createDrop, settings.dropInterval);
     
     // Create obstacles less frequently
-    obstacleInterval = setInterval(createObstacle, 2000); // Create obstacle every 2 seconds
+    obstacleInterval = setInterval(createObstacle, settings.obstacleInterval);
     
     // Start countdown timer
     gameTimer = setInterval(() => {
@@ -129,10 +181,19 @@ function createDrop() {
     const drop = document.createElement('div');
     drop.className = 'water-drop';
     
-    // Randomly determine if drop is clean or dirty (70% clean, 30% dirty)
-    const isClean = Math.random() > 0.3;
-    drop.classList.add(isClean ? 'clean' : 'dirty');
-    drop.dataset.type = isClean ? 'clean' : 'dirty';
+    // Randomly determine drop type (55% clean, 20% premium, 25% dirty)
+    const rand = Math.random();
+    let dropType;
+    if (rand < 0.55) {
+        dropType = 'clean';
+    } else if (rand < 0.75) {
+        dropType = 'premium';
+    } else {
+        dropType = 'dirty';
+    }
+    
+    drop.classList.add(dropType);
+    drop.dataset.type = dropType;
     
     // Random position across game width
     const gameWidth = gameContainer.offsetWidth;
@@ -154,22 +215,8 @@ function createDrop() {
     
     gameContainer.appendChild(drop);
     
-    // Check for collision during fall
-    const collisionChecker = setInterval(() => {
-        if (!gameRunning || !drop.parentNode) {
-            clearInterval(collisionChecker);
-            return;
-        }
-        
-        if (checkCollision(drop, bucket)) {
-            clearInterval(collisionChecker);
-            catchDrop(drop);
-        }
-    }, 50);
-    
-    // Remove drop after animation ends
+    // Remove drop after animation ends (missed drops don't give points)
     drop.addEventListener('animationend', () => {
-        clearInterval(collisionChecker);
         if (drop.parentNode) {
             drop.remove();
         }
@@ -204,62 +251,42 @@ function createObstacle() {
     
     gameContainer.appendChild(obstacle);
     
-    // Check for collision during fall
-    const collisionChecker = setInterval(() => {
-        if (!gameRunning || !obstacle.parentNode) {
-            clearInterval(collisionChecker);
-            return;
-        }
-        
-        if (checkCollision(obstacle, bucket)) {
-            clearInterval(collisionChecker);
-            catchObstacle(obstacle);
-        }
-    }, 50);
-    
     // Remove obstacle after animation ends
     obstacle.addEventListener('animationend', () => {
-        clearInterval(collisionChecker);
         if (obstacle.parentNode) {
             obstacle.remove();
         }
     });
 }
 
-// Check collision between drop and bucket
-function checkCollision(drop, bucket) {
-    const dropRect = drop.getBoundingClientRect();
-    const bucketRect = bucket.getBoundingClientRect();
-    
-    return dropRect.left < bucketRect.right &&
-           dropRect.right > bucketRect.left &&
-           dropRect.bottom > bucketRect.top &&
-           dropRect.top < bucketRect.bottom;
-}
-
-// Handle drop catch
-function catchDrop(drop) {
-    const isClean = drop.dataset.type === 'clean';
-    const points = isClean ? 1 : -1;
-    
-    score += points;
-    updateScore();
-    
-    // Show floating score text
-    showFloatingScore(points, drop.getBoundingClientRect());
-    
-    // Add visual feedback
-    showClickEffect(drop.getBoundingClientRect());
-    
-    // Remove the drop
-    drop.remove();
-}
-
-// Handle direct click on drop
+// Handle direct click/tap on drop
 function clickDrop(drop, event) {
     event.stopPropagation();
-    const isClean = drop.dataset.type === 'clean';
-    const points = isClean ? 2 : -1; // Bonus point for clicking directly!
+    const dropType = drop.dataset.type;
+    const settings = difficultySettings[currentDifficulty];
+    
+    let basePoints;
+    let isPositive;
+    
+    switch (dropType) {
+        case 'clean':
+            basePoints = 1;
+            isPositive = true;
+            break;
+        case 'premium':
+            basePoints = 2;
+            isPositive = true;
+            break;
+        case 'dirty':
+            basePoints = -1;
+            isPositive = false;
+            break;
+        default:
+            basePoints = 0;
+            isPositive = false;
+    }
+    
+    const points = Math.round(basePoints * settings.scoreMultiplier);
     
     score += points;
     updateScore();
@@ -270,31 +297,18 @@ function clickDrop(drop, event) {
     // Add visual feedback
     showClickEffect(drop.getBoundingClientRect());
     
+    // Add particle effect for better visual feedback
+    createParticleEffect(drop.getBoundingClientRect(), isPositive);
+    
     // Remove the drop
     drop.remove();
-}
-
-// Handle obstacle catch
-function catchObstacle(obstacle) {
-    const points = -2; // Obstacles reduce score by 2
-    
-    score += points;
-    updateScore();
-    
-    // Show floating score text
-    showFloatingScore(points, obstacle.getBoundingClientRect());
-    
-    // Add visual feedback
-    showClickEffect(obstacle.getBoundingClientRect());
-    
-    // Remove the obstacle
-    obstacle.remove();
 }
 
 // Handle direct click on obstacle
 function clickObstacle(obstacle, event) {
     event.stopPropagation();
-    const points = -1; // Less penalty for clicking obstacle directly
+    const settings = difficultySettings[currentDifficulty];
+    const points = Math.round(-2 * settings.scoreMultiplier); // Penalty for clicking obstacles
     
     score += points;
     updateScore();
@@ -304,6 +318,9 @@ function clickObstacle(obstacle, event) {
     
     // Add visual feedback
     showClickEffect(obstacle.getBoundingClientRect());
+    
+    // Add particle effect
+    createParticleEffect(obstacle.getBoundingClientRect(), false);
     
     // Remove the obstacle
     obstacle.remove();
@@ -314,15 +331,19 @@ function showFloatingScore(points, dropRect) {
     const floatingText = document.createElement('div');
     floatingText.className = `floating-score ${points > 0 ? 'positive' : 'negative'}`;
     
-    // Different text based on interaction type
-    if (points === 2) {
-        floatingText.textContent = `+${points} 💧 BONUS!`;
+    // Different text based on interaction type and points
+    if (points >= 3) {
+        floatingText.textContent = `+${points} � PREMIUM!`;
+    } else if (points === 2) {
+        floatingText.textContent = `+${points} 💙`;
     } else if (points === 1) {
         floatingText.textContent = `+${points} 💧`;
-    } else if (points === -2) {
+    } else if (points <= -2) {
         floatingText.textContent = `${points} ☁️`;
-    } else {
+    } else if (points < 0) {
         floatingText.textContent = `${points}`;
+    } else {
+        floatingText.textContent = `+${points}`;
     }
     
     // Position at drop location
@@ -397,8 +418,12 @@ function endGame() {
     // Remove all remaining elements
     const drops = gameContainer.querySelectorAll('.water-drop');
     const obstacles = gameContainer.querySelectorAll('.obstacle');
+    const milestones = gameContainer.querySelectorAll('.milestone-notification');
+    const flashes = document.querySelectorAll('.milestone-flash');
     drops.forEach(drop => drop.remove());
     obstacles.forEach(obstacle => obstacle.remove());
+    milestones.forEach(milestone => milestone.remove());
+    flashes.forEach(flash => flash.remove());
     
     // Show end screen
     showEndScreen();
@@ -406,14 +431,15 @@ function endGame() {
 
 // Show end screen with results
 function showEndScreen() {
-    const isWin = score > 10;
+    const settings = difficultySettings[currentDifficulty];
+    const isWin = score >= settings.winScore;
     
     if (isWin) {
-        endMessage.textContent = "Great job! You caught lots of clean water! 💧";
+        endMessage.textContent = "Amazing! You've helped bring clean water to those in need! 💧";
         // Trigger confetti celebration for wins!
         createConfetti();
     } else {
-        endMessage.textContent = "Oh no! Many people still need clean water. Try again!";
+        endMessage.textContent = `You need ${settings.winScore} points to win. Keep trying to help more people get clean water!`;
     }
     
     finalScoreDisplay.textContent = score;
@@ -423,18 +449,17 @@ function showEndScreen() {
 
 // Reset game for replay
 function resetGame() {
+    const settings = difficultySettings[currentDifficulty];
+    
     // Reset game state
     score = 0;
-    timeLeft = 30;
+    timeLeft = settings.timeLimit;
     gameRunning = false;
-    bucketPosition = 50;
+    achievedMilestones.clear(); // Reset milestones
     
     // Reset displays
     updateScore();
     updateTimer();
-    
-    // Reset bucket position
-    bucket.style.left = bucketPosition + '%';
     
     // Show start screen
     showScreen(startScreen);
@@ -444,15 +469,27 @@ function resetGame() {
     const obstacles = gameContainer.querySelectorAll('.obstacle');
     const floatingTexts = gameContainer.querySelectorAll('.floating-score');
     const clickEffects = gameContainer.querySelectorAll('.click-effect');
+    const particles = gameContainer.querySelectorAll('.particle');
+    const milestones = gameContainer.querySelectorAll('.milestone-notification');
+    const flashes = document.querySelectorAll('.milestone-flash');
     drops.forEach(drop => drop.remove());
     obstacles.forEach(obstacle => obstacle.remove());
     floatingTexts.forEach(text => text.remove());
     clickEffects.forEach(effect => effect.remove());
+    particles.forEach(particle => particle.remove());
+    milestones.forEach(milestone => milestone.remove());
+    flashes.forEach(flash => flash.remove());
 }
 
 // Update score display with visual feedback
 function updateScore() {
+    const oldScore = parseInt(scoreDisplay.textContent) || 0;
     scoreDisplay.textContent = score;
+    
+    // Check for milestones only when score increases
+    if (score > oldScore) {
+        checkMilestones(score);
+    }
     
     // Add pulse effect to score
     scoreDisplay.classList.remove('score-pulse');
@@ -468,6 +505,115 @@ function updateScore() {
 // Update timer display
 function updateTimer() {
     timeDisplay.textContent = timeLeft;
+}
+
+// Check and display milestones
+function checkMilestones(newScore) {
+    // Check each milestone
+    for (const milestone of Object.keys(milestoneMessages)) {
+        const milestoneScore = parseInt(milestone);
+        
+        // If we've reached this milestone and haven't shown it yet
+        if (newScore >= milestoneScore && !achievedMilestones.has(milestoneScore)) {
+            achievedMilestones.add(milestoneScore);
+            
+            // Get a random message for this milestone
+            const messages = milestoneMessages[milestoneScore];
+            const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+            
+            // Display the milestone
+            showMilestone(randomMessage, milestoneScore);
+            
+            // Only show one milestone at a time
+            break;
+        }
+    }
+}
+
+// Display milestone achievement
+function showMilestone(message, milestoneScore) {
+    const milestone = document.createElement('div');
+    milestone.className = 'milestone-notification';
+    milestone.innerHTML = `
+        <div class="milestone-header">Milestone Reached!</div>
+        <div class="milestone-score">${milestoneScore} Points</div>
+        <div class="milestone-message">${message}</div>
+    `;
+    
+    // Position in center of game container
+    gameContainer.appendChild(milestone);
+    
+    // Add screen flash effect for celebration
+    createMilestoneFlash();
+    
+    // Add animation class after a brief delay for CSS transition
+    setTimeout(() => {
+        milestone.classList.add('show');
+    }, 50);
+    
+    // Remove after 3 seconds
+    setTimeout(() => {
+        milestone.classList.add('hide');
+        setTimeout(() => {
+            if (milestone.parentNode) {
+                milestone.remove();
+            }
+        }, 500);
+    }, 3000);
+}
+
+// Create a brief screen flash for milestone celebration
+function createMilestoneFlash() {
+    const flash = document.createElement('div');
+    flash.className = 'milestone-flash';
+    document.body.appendChild(flash);
+    
+    // Remove after animation
+    setTimeout(() => {
+        if (flash.parentNode) {
+            flash.remove();
+        }
+    }, 300);
+}
+
+// Create particle effect for better visual feedback
+function createParticleEffect(elementRect, isPositive) {
+    const colors = isPositive ? ['#4FCB53', '#2E9DF7', '#FFC907'] : ['#F5402C', '#666', '#333'];
+    const particleCount = isPositive ? 8 : 6;
+    
+    for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        
+        // Random color from the appropriate palette
+        particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        
+        // Position at element location
+        const gameRect = gameContainer.getBoundingClientRect();
+        const centerX = (elementRect.left - gameRect.left) + (elementRect.width / 2);
+        const centerY = (elementRect.top - gameRect.top) + (elementRect.height / 2);
+        
+        particle.style.left = centerX + 'px';
+        particle.style.top = centerY + 'px';
+        
+        // Random direction and speed
+        const angle = (i / particleCount) * Math.PI * 2;
+        const speed = 20 + Math.random() * 30;
+        const dx = Math.cos(angle) * speed;
+        const dy = Math.sin(angle) * speed;
+        
+        particle.style.setProperty('--dx', dx + 'px');
+        particle.style.setProperty('--dy', dy + 'px');
+        
+        gameContainer.appendChild(particle);
+        
+        // Remove after animation
+        setTimeout(() => {
+            if (particle.parentNode) {
+                particle.remove();
+            }
+        }, 800);
+    }
 }
 
 // Initialize game when page loads
