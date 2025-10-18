@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water Drop Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- START SCREEN -->
+    <div id="start-screen" class="screen">
+        <div class="start-content">
+            <div class="logo-section">
+                <div class="charity-logo">
+                    <img src="img/charity-water-logo.svg" alt="charity: water SUPPORTER" class="logo-image">
+                </div>
+                <h1 class="game-logo">Water Drop Catcher!!!</h1>
+            </div>
+            
+            <button id="start-btn" class="main-button">START GAME</button>
+        </div>
+    </div>
+
+    <!-- PLAY SCREEN -->
+    <div id="play-screen" class="screen hidden">
+        <div class="play-header">
+            <div class="timer-section">
+                <div class="timer-label">Timer:</div>
+                <div class="timer-value"><span id="time">30</span> Seconds Left</div>
+            </div>
+            <div class="score-section">
+                <div class="score-label">Score:</div>
+                <div class="score-value" id="score">0</div>
+            </div>
+            <div class="control-section">
+                <button id="reset-btn" class="reset-button">RESET</button>
+            </div>
+        </div>
+        
+        <div id="game-container">
+            <div id="bucket"></div>
+        </div>
+    </div>
+
+    <!-- END SCREEN -->
+    <div id="end-screen" class="screen hidden">
+        <div class="end-content">
+            <h1 class="time-up">TIME UP!!!</h1>
+            <div class="final-score-section">
+                <div class="final-score-label">FINAL SCORE</div>
+                <div class="final-score-value" id="final-score-display">0</div>
+            </div>
+            <div id="end-message" class="end-message"></div>
+            <button id="play-again-btn" class="main-button">PLAY AGAIN!?</button>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

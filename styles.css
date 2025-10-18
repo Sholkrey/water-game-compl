@@ -1,0 +1,572 @@
+/* Charity: water Brand Colors & Fonts
+
+Primary Colors:
+- Yellow:     #FFC907
+- Blue:       #2E9DF7
+
+Secondary Colors:
+- Light Blue: #8BD1CB
+- Green:      #4FCB53
+- Orange:     #FF902A
+- Red:        #F5402C
+- Dark Green: #159A48
+- Pink:       #F16061
+
+Fonts:
+- Proxima Nova
+- Avenir
+
+*/
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background: #000000;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, Arial, sans-serif;
+    overflow: hidden;
+}
+
+/* Screen Management */
+.screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #000000;
+}
+
+.screen.hidden {
+    display: none;
+}
+
+/* START SCREEN */
+#start-screen {
+    background: #000000;
+}
+
+.start-content {
+    background: #fff;
+    padding: 50px 40px;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(255, 201, 7, 0.3);
+    text-align: center;
+    max-width: 450px;
+    width: 90%;
+    border: 2px solid #FFC907;
+}
+
+.logo-section {
+    margin-bottom: 30px;
+}
+
+.charity-logo {
+    margin-bottom: 20px;
+}
+
+.logo-image {
+    width: 300px;
+    height: auto;
+    max-width: 100%;
+}
+
+.game-logo {
+    font-size: 24px;
+    color: #333;
+    margin: 0;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+/* PLAY SCREEN */
+#play-screen {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0;
+    background: linear-gradient(180deg, #1a1a1a 0%, #333333 100%);
+}
+
+.play-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    background: rgba(0, 0, 0, 0.8);
+    box-shadow: 0 2px 10px rgba(255, 201, 7, 0.2);
+    border-bottom: 2px solid #FFC907;
+}
+
+.control-section {
+    text-align: center;
+}
+
+.timer-section, .score-section {
+    text-align: center;
+}
+
+.timer-label, .score-label {
+    font-size: 16px;
+    color: #FFC907;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.timer-value {
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.score-value {
+    font-size: 24px;
+    font-weight: bold;
+    color: #FFC907;
+}
+
+#game-container {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+
+/* BUTTONS */
+.main-button {
+    padding: 15px 30px;
+    background-color: #FFC907;
+    color: #000000;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 10px rgba(255, 201, 7, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.main-button:hover {
+    background-color: #e6b406;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 201, 7, 0.6);
+}
+
+/* Reset Button */
+.reset-button {
+    padding: 8px 16px;
+    background-color: #F5402C;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(245, 64, 44, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.reset-button:hover {
+    background-color: #d63384;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(245, 64, 44, 0.5);
+}
+
+.water-drop {
+    position: absolute;
+    width: 60px;  /* increased from 40px */
+    height: 60px; /* increased from 40px */
+    background-color: #0099ff;
+    border-radius: 50%;
+    animation: dropFall linear forwards;
+    transform-origin: center;
+    cursor: pointer;
+    padding: 15px;  /* Add padding for larger click area */
+    margin: -15px;  /* Offset padding to maintain visual size */
+    transition: transform 0.1s ease;  /* Smooth hover effect */
+}
+
+.water-drop:hover {
+    transform: scale(1.1);  /* Slight grow effect on hover */
+}
+
+.bad-drop {
+    background-color: #ff4444;
+}
+
+
+
+@keyframes dropFall {
+    from {
+        transform: translateY(-20px);
+    }
+    to {
+        transform: translateY(600px);
+    }
+}
+
+/* Bucket Styles */
+#bucket {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 30px;
+    background-color: #FFC907;
+    border-radius: 0 0 12px 12px;
+    border-top: 2px solid #e6b406;
+    transition: left 0.1s ease;
+    cursor: move;
+    box-shadow: 0 3px 12px rgba(255, 201, 7, 0.4);
+}
+
+#bucket::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -3px;
+    right: -3px;
+    height: 6px;
+    background-color: #e6b406;
+    border-radius: 3px 3px 0 0;
+}
+
+/* Clean water drops */
+.water-drop.clean {
+    background: radial-gradient(circle at 30% 30%, #87CEEB, #4A90E2);
+    border: 2px solid #ffffff;
+    box-shadow: 0 3px 12px rgba(74, 144, 226, 0.6);
+}
+
+/* Dirty water drops */
+.water-drop.dirty {
+    background: radial-gradient(circle at 30% 30%, #8B4513, #654321);
+    border: 2px solid #A0522D;
+    box-shadow: 0 3px 12px rgba(139, 69, 19, 0.6);
+}
+
+.water-drop {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    animation: dropFall linear forwards;
+    cursor: pointer;
+    transition: transform 0.1s ease;
+}
+
+.water-drop:hover {
+    transform: scale(1.1);
+}
+
+/* END SCREEN */
+#end-screen {
+    background: #000000;
+}
+
+.end-content {
+    background: #fff;
+    padding: 50px 40px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 15px 40px rgba(255, 201, 7, 0.3);
+    max-width: 450px;
+    width: 90%;
+    border: 2px solid #FFC907;
+}
+
+.time-up {
+    font-size: 32px;
+    color: #333;
+    margin: 0 0 30px 0;
+    font-weight: bold;
+}
+
+.final-score-section {
+    margin-bottom: 25px;
+    background: #000;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+}
+
+.final-score-label {
+    font-size: 16px;
+    color: #FFC907;
+    margin-bottom: 10px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.final-score-value {
+    font-size: 48px;
+    color: #ffffff;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.end-message {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 30px;
+    line-height: 1.4;
+}
+
+/* Floating score text */
+.floating-score {
+    position: absolute;
+    font-size: 24px;
+    font-weight: bold;
+    pointer-events: none;
+    z-index: 100;
+    animation: floatUp 1s ease-out forwards;
+}
+
+.floating-score.positive {
+    color: #4FCB53;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+.floating-score.negative {
+    color: #F5402C;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+@keyframes floatUp {
+    0% {
+        opacity: 1;
+        transform: translateY(0px) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-50px) scale(1.2);
+    }
+}
+
+/* Visual Feedback Effects */
+.click-effect {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    border: 3px solid #FFC907;
+    border-radius: 50%;
+    background: rgba(255, 201, 7, 0.2);
+    animation: clickRipple 0.6s ease-out forwards;
+    pointer-events: none;
+    z-index: 50;
+}
+
+@keyframes clickRipple {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
+/* Obstacle Styles */
+.obstacle {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background: radial-gradient(circle at 30% 30%, #666, #333);
+    border-radius: 50%;
+    border: 2px solid #555;
+    animation: dropFall linear forwards;
+    cursor: pointer;
+    transition: transform 0.1s ease;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.6);
+}
+
+.obstacle:hover {
+    transform: scale(1.1);
+}
+
+.obstacle::before {
+    content: '☁️';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+}
+
+/* Confetti Animation */
+.confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: #FFC907;
+    animation: confettiFall 3s ease-in-out forwards;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+.confetti:nth-child(2n) { background: #4FCB53; }
+.confetti:nth-child(3n) { background: #2E9DF7; }
+.confetti:nth-child(4n) { background: #FF902A; }
+.confetti:nth-child(5n) { background: #F5402C; }
+
+@keyframes confettiFall {
+    0% {
+        transform: translateY(-100vh) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+/* Score pulse effect */
+.score-pulse {
+    animation: scorePulse 0.3s ease-out;
+}
+
+@keyframes scorePulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); color: #FFC907; }
+    100% { transform: scale(1); }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .start-content, .end-content {
+        padding: 30px 20px;
+        width: 85%;
+    }
+    
+    .logo-image {
+        width: 250px;
+    }
+    
+    .game-logo {
+        font-size: 20px;
+    }
+    
+    .time-up {
+        font-size: 24px;
+    }
+    
+    .final-score-value {
+        font-size: 32px;
+    }
+    
+    .play-header {
+        padding: 15px 20px;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .timer-section, .score-section, .control-section {
+        flex: 1;
+        min-width: 120px;
+    }
+    
+    .timer-value, .score-value {
+        font-size: 16px;
+    }
+    
+    .score-value {
+        font-size: 20px;
+    }
+    
+    .reset-button {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+    
+    #bucket {
+        width: 60px;
+        height: 25px;
+    }
+    
+    .water-drop, .obstacle {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .obstacle::before {
+        font-size: 18px;
+    }
+    
+    .floating-score {
+        font-size: 18px;
+    }
+    
+    .click-effect {
+        width: 60px;
+        height: 60px;
+    }
+}
+
+@media (max-width: 480px) {
+    .start-content, .end-content {
+        padding: 20px 15px;
+        width: 90%;
+    }
+    
+    .logo-image {
+        width: 200px;
+    }
+    
+    .game-logo {
+        font-size: 18px;
+    }
+    
+    .play-header {
+        padding: 10px 15px;
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .timer-section, .score-section, .control-section {
+        margin-bottom: 10px;
+    }
+    
+    .main-button {
+        padding: 12px 20px;
+        font-size: 14px;
+    }
+    
+    .water-drop, .obstacle {
+        width: 35px;
+        height: 35px;
+    }
+    
+    #bucket {
+        width: 50px;
+        height: 20px;
+    }
+}
+
+/* Touch-friendly interactions */
+@media (hover: none) {
+    .water-drop, .obstacle {
+        transform: scale(1.1); /* Slightly larger for touch */
+    }
+    
+    .water-drop:active, .obstacle:active {
+        transform: scale(1.3);
+    }
+}

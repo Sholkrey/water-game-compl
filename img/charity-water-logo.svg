@@ -1,0 +1,25 @@
+<svg width="400" height="300" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <!-- Black background -->
+  <rect width="400" height="300" fill="#000000"/>
+  
+  <!-- Jerry can icon -->
+  <g transform="translate(200, 100)">
+    <!-- Main jerry can body -->
+    <rect x="-25" y="-15" width="50" height="60" rx="8" fill="#FFC907"/>
+    
+    <!-- Handle -->
+    <rect x="-30" y="-10" width="8" height="15" rx="4" fill="#FFC907"/>
+    
+    <!-- Cap -->
+    <rect x="-15" y="-20" width="30" height="8" rx="4" fill="#333"/>
+    
+    <!-- Cross pattern -->
+    <line x1="-15" y1="-5" x2="15" y2="25" stroke="#333" stroke-width="3"/>
+    <line x1="15" y1="-5" x2="-15" y2="25" stroke="#333" stroke-width="3"/>
+    <line x1="-10" y1="10" x2="10" y2="10" stroke="#333" stroke-width="3"/>
+  </g>
+  
+  <!-- Text -->
+  <text x="200" y="180" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="28" font-weight="300" letter-spacing="3px">charity: water</text>
+  <text x="200" y="210" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="16" font-weight="600" letter-spacing="2px">SUPPORTER</text>
+</svg>
